@@ -2,7 +2,8 @@
 SoftwareSerial coinSerial(10, 11);
 
 const int INHIBIT_PIN = 8;
-const int LED_SIGNAL_PIN = 7;
+const int LED_INHIBIT_PIN = 7;
+const int LED_SIGNAL_PIN = 6;
 const bool HIGH_IS_ENABLED = true;
 const uint8_t MAX_CODE = 10; //Cantidad de pulsos que va a tener la moneda de mayor denominación
 
@@ -26,17 +27,21 @@ void setInhibit(bool enable) {
   if (HIGH_IS_ENABLED) {
     if (enable) {
       digitalWrite(INHIBIT_PIN, HIGH);
+      digitalWrite(LED_INHIBIT_PIN, HIGH);
       Serial.println("on");
     } else {
       digitalWrite(INHIBIT_PIN, LOW);
+      digitalWrite(LED_INHIBIT_PIN, LOW);
       Serial.println("off");
     }
   } else {
     if (enable) {
       digitalWrite(INHIBIT_PIN, LOW);
+      digitalWrite(LED_INHIBIT_PIN, LOW);
       Serial.println("on");
     } else {
       digitalWrite(INHIBIT_PIN, HIGH);
+      digitalWrite(LED_INHIBIT_PIN, HIGH);
       Serial.println("off");
     }
   }
@@ -77,6 +82,7 @@ void getDataPC() {
 
 void setup() {
   pinMode(INHIBIT_PIN, OUTPUT);
+  pinMode(LED_INHIBIT_PIN, OUTPUT);
   pinMode(LED_SIGNAL_PIN, OUTPUT);
   Serial.begin(9600);
   setInhibit(false);  // deshabilita
