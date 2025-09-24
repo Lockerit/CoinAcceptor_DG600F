@@ -8,19 +8,19 @@ const bool HIGH_IS_ENABLED = true;
 const uint8_t MAX_CODE = 10; //Cantidad de pulsos que va a tener la moneda de mayor denominación
 
 // Por si se quiere enviar el valor de la moneda
-// int coinValues[MAX_CODE + 1] = {
-//   0,    // índice 0 (no usado, el DG600F nunca envía 0)
-//   100,  // código 1 = moneda $100
-//   200,  // código 2 = moneda $200 vieja
-//   200,  // código 3 = moneda $200 nueva
-//   500,  // código 4 = moneda $500 vieja
-//   500,  // código 5 = moneda $500 nueva
-//   0,    // Código 6 = no usado
-//   0,    // Código 7 = no usado
-//   0,    // Código 8 = no usado
-//   0,    // Código 9 = no usado
-//   1000  // código 10 = moneda $1000
-// };
+int coinValues[MAX_CODE + 1] = {
+  0,    // índice 0 (no usado, el DG600F nunca envía 0)
+  100,  // código 1 = moneda $100
+  200,  // código 2 = moneda $200 vieja
+  200,  // código 3 = moneda $200 nueva
+  500,  // código 4 = moneda $500 vieja
+  500,  // código 5 = moneda $500 nueva
+  0,    // Código 6 = no usado
+  0,    // Código 7 = no usado
+  0,    // Código 8 = no usado
+  0,    // Código 9 = no usado
+  1000  // código 10 = moneda $1000
+};
 
 void setInhibit(bool enable) {
 
@@ -28,21 +28,17 @@ void setInhibit(bool enable) {
     if (enable) {
       digitalWrite(INHIBIT_PIN, HIGH);
       digitalWrite(LED_INHIBIT_PIN, HIGH);
-      Serial.println("on");
     } else {
       digitalWrite(INHIBIT_PIN, LOW);
       digitalWrite(LED_INHIBIT_PIN, LOW);
-      Serial.println("off");
     }
   } else {
     if (enable) {
       digitalWrite(INHIBIT_PIN, LOW);
       digitalWrite(LED_INHIBIT_PIN, LOW);
-      Serial.println("on");
     } else {
       digitalWrite(INHIBIT_PIN, HIGH);
       digitalWrite(LED_INHIBIT_PIN, HIGH);
-      Serial.println("off");
     }
   }
 }
@@ -52,16 +48,16 @@ void sendData() {
   while (coinSerial.available()) {
     digitalWrite(LED_SIGNAL_PIN, HIGH);
     int code = coinSerial.read();
-    if (code >= 1 && code <= MAX_CODE + 1) {
+    if (code >= 1 && code <= MAX_CODE) {
       // int val = coinValues[code]; // Por si se quiere enviar el valor de la moneda
       // Serial.println(val);
       // if (val > 0) {
-        Serial.println(code);
+        Serial.write(code);
       // } else {
       //   Serial.println(0);
       // }
     } else {
-      Serial.println(0);
+      Serial.write(0);
     }
   }
   digitalWrite(LED_SIGNAL_PIN, LOW);
